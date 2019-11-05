@@ -1,0 +1,20 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: rad
+webhooks:
+  - name: rad.rad-webhook.svc.cluster.local
+    clientConfig:
+      caBundle: ${CA_BUNDLE}
+      service:
+        name: rad
+        namespace: rad-webhook
+        path: "/mutate"
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    namespaceSelector:
+      matchLabels:
+        rad: enabled

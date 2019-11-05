@@ -1,0 +1,17 @@
+namespace: rad-webhook
+
+commonLabels:
+  app: rad
+
+resources:
+- namespace.yaml
+- deployment.yaml
+- service.yaml
+- mutatingwebhook.yaml
+
+# secretGenerator:
+# - name: rad-certs
+#   behavior: create
+#   files:
+#   - tls.crt=tls/rad.crt
+#   - tls.key=tls/rad.key

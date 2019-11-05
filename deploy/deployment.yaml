@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rad
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: mutator
+          image: joshrwolf/rad:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8443
+            name: webhook-api
+          env:
+          - name: PREPEND_REGISTRY
+            value: localhost:5000
+          volumeMounts:
+          - name: rad-certs
+            mountPath: /ssl
+            readOnly: true
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi
+      volumes:
+      - name: rad-certs
+        secret:
+          secretName: rad-certs
